@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bundesliga Tippspiel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #inputContainer {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      margin-bottom: 10px;
+    }
+
+    #submitBtn {
+      margin-top: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    #outputContainer {
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="inputContainer">
+    <h2>Eingabe</h2>
+    <form id="tipForm">
+      <label for="goalkeeper">Tor:</label>
+      <input type="text" name="goalkeeper" required>
+
+      <label for="defenders">Abwehr (3):</label>
+      <input type="text" name="defender1" required>
+      <input type="text" name="defender2" required>
+      <input type="text" name="defender3" required>
+
+      <label for="midfielders">Mittelfeld (4):</label>
+      <input type="text" name="midfielder1" required>
+      <input type="text" name="midfielder2" required>
+      <input type="text" name="midfielder3" required>
+      <input type="text" name="midfielder4" required>
+
+      <label for="strikers">Sturm (3):</label>
+      <input type="text" name="striker1" required>
+      <input type="text" name="striker2" required>
+      <input type="text" name="striker3" required>
+
+      <label for="deadline">Eingabe bis:</label>
+      <input type="datetime-local" name="deadline" required>
+      <br>
+
+      <button type="button" id="submitBtn" onclick="submitTip()">Tip abgeben</button>
+    </form>
+  </div>
+
+  <div id="outputContainer">
+    <h2>Tipps der anderen Spieler</h2>
+    <ul id="tipList"></ul>
+  </div>
+
+  <script>
+    function submitTip() {
+      const form = document.getElementById('tipForm');
+      const tipList = document.getElementById('tipList');
+
+      const tipItem = document.createElement('li');
+      tipItem.textContent = JSON.stringify(getFormValues(form));
+
+      tipList.appendChild(tipItem);
+
+      document.getElementById('outputContainer').style.display = 'block';
+      form.reset();
+      disableFormInputs(form);
+    }
+
+    function getFormValues(form) {
+      const formData = new FormData(form);
+      const formValues = {};
+
+      formData.forEach((value, key) => {
+        formValues[key] = value;
+      });
+
+      return formValues;
+    }
+
+    function disableFormInputs(form) {
+      const inputs = form.getElementsByTagName('input');
+
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = true;
+      }
+
+      document.getElementById('submitBtn').disabled = true;
+    }
+  </script>
+</body>
+</html>
